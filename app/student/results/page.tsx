@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 import { getSession } from '@/lib/auth/session'
 import { prisma } from '@/lib/prisma'
 import { FileText, Calendar, Trophy, CheckCircle2, ArrowRight, EyeOff, Clock } from 'lucide-react'

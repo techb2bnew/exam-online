@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 import { prisma } from '@/lib/prisma'
 import { FileText, Users, CheckCircle, Clock } from 'lucide-react'
 import Link from 'next/link'
