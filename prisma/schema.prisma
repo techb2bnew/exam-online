@@ -1,0 +1,85 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model profiles {
+  id              String   @id @default(uuid())
+  name            String
+  email           String   @unique
+  role            String
+  hashed_password String
+  created_at      DateTime @default(now())
+
+  submissions submissions[]
+  assignments assignments[]
+}
+
+model tests {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  duration    Int
+  total_marks Int
+  instructions String?
+  is_active   Boolean  @default(true)
+  created_by  String
+  created_at  DateTime @default(now())
+
+  questions questions[]
+  assignments assignments[]
+  submissions submissions[]
+}
+
+model questions {
+  id           String   @id @default(uuid())
+  test_id      String
+  question_text String
+  question_type String
+  marks        Int
+  order_index  Int
+  created_at   DateTime @default(now())
+
+  tests  tests   @relation(fields: [test_id], references: [id], onDelete: Cascade)
+  options options[]
+}
+
+model options {
+  id          String   @id @default(uuid())
+  question_id String
+  option_text String
+  is_correct  Boolean
+  created_at  DateTime @default(now())
+
+  questions questions @relation(fields: [question_id], references: [id], onDelete: Cascade)
+}
+
+model assignments {
+  id          String   @id @default(uuid())
+  test_id     String
+  student_id  String
+  status      String   @default("pending")
+  assigned_at DateTime @default(now())
+
+  tests    tests    @relation(fields: [test_id], references: [id], onDelete: Cascade)
+  profiles profiles @relation(fields: [student_id], references: [id], onDelete: Cascade)
+}
+
+model submissions {
+  id             String   @id @default(uuid())
+  test_id        String
+  student_id     String
+  answers        Json
+  marks_obtained Int
+  is_reviewed    Boolean  @default(false)
+  submitted_at   DateTime @default(now())
+
+  tests    tests    @relation(fields: [test_id], references: [id], onDelete: Cascade)
+  profiles profiles @relation(fields: [student_id], references: [id], onDelete: Cascade)
+}
+
