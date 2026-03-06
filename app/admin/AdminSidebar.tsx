@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, FileText, Users, LogOut, CheckCircle, GraduationCap, ChevronRight } from 'lucide-react'
+import { LayoutDashboard, FileText, Users, LogOut, CheckCircle, GraduationCap, ChevronRight, Wallet } from 'lucide-react'
 
 export default function AdminSidebar() {
   const pathname = usePathname()
@@ -27,6 +27,11 @@ export default function AdminSidebar() {
       label: 'Students',
       href: '/admin/students',
       icon: Users,
+    },
+    {
+      label: 'Student Fee',
+      href: '/admin/fees',
+      icon: Wallet,
     },
   ]
 

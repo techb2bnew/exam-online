@@ -18,6 +18,7 @@ model profiles {
 
   submissions submissions[]
   assignments assignments[]
+  fees        fees[]
 }
 
 model tests {
@@ -81,5 +82,34 @@ model submissions {
 
   tests    tests    @relation(fields: [test_id], references: [id], onDelete: Cascade)
   profiles profiles @relation(fields: [student_id], references: [id], onDelete: Cascade)
+}
+
+model fees {
+  id                   String   @id @default(uuid())
+  student_id           String
+  course_name          String
+  course_fee           Int
+  course_timing_start  String
+  course_timing_end    String
+  duration_minutes     Int
+  course_start_date    DateTime
+  course_end_date      DateTime
+  total_amount         Int
+  reference_type       String   // 'by' or 'to'
+  reference_value      String?
+  created_at           DateTime @default(now())
+
+  profiles profiles @relation(fields: [student_id], references: [id], onDelete: Cascade)
+  installments fee_installments[]
+}
+
+model fee_installments {
+  id        String   @id @default(uuid())
+  fee_id    String
+  amount    Int
+  due_date  DateTime
+  created_at DateTime @default(now())
+
+  fees fees @relation(fields: [fee_id], references: [id], onDelete: Cascade)
 }
 
